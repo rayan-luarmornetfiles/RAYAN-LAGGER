@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Générateur d'Excuse</title>
+
+<style>
+    body{
+        margin:0;
+        height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        background:#0a0014;
+        font-family:Arial, sans-serif;
+        overflow:hidden;
+    }
+
+    .container{
+        width:400px;
+        padding:30px;
+        border-radius:20px;
+        background:rgba(20,0,40,0.8);
+        box-shadow:0 0 20px #a020f0,
+                   0 0 40px #a020f0;
+        text-align:center;
+    }
+
+    h1{
+        color:#d580ff;
+        text-shadow:0 0 10px #c800ff;
+        margin-bottom:20px;
+    }
+
+    textarea{
+        width:100%;
+        height:120px;
+        border:none;
+        outline:none;
+        border-radius:12px;
+        padding:15px;
+        resize:none;
+        font-size:16px;
+        background:#140020;
+        color:white;
+        box-shadow:0 0 10px #a020f0 inset;
+    }
+
+    button{
+        margin-top:20px;
+        padding:12px 30px;
+        border:none;
+        border-radius:12px;
+        background:#b000ff;
+        color:white;
+        font-size:18px;
+        cursor:pointer;
+        transition:0.3s;
+        box-shadow:0 0 15px #d000ff;
+    }
+
+    button:hover{
+        transform:scale(1.05);
+        background:#d000ff;
+        box-shadow:0 0 25px #ff00ff;
+    }
+
+    .result{
+        margin-top:25px;
+        color:#fff;
+        font-size:18px;
+        background:#1a0028;
+        padding:15px;
+        border-radius:12px;
+        box-shadow:0 0 10px #8000ff inset;
+        min-height:80px;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>💜 Générateur d'Excuse 💜</h1>
+
+    <textarea id="reason" placeholder="Exemple : j'ai été absent en cours aujourd'hui..."></textarea>
+
+    <button onclick="generateExcuse()">Excuse</button>
+
+    <div class="result" id="result">
+        Ton excuse apparaîtra ici...
+    </div>
+</div>
+
+<script>
+function generateExcuse(){
+    let text = document.getElementById("reason").value;
+
+    if(text.trim() === ""){
+        document.getElementById("result").innerHTML =
+        "⚠️ Écris quelque chose d'abord.";
+        return;
+    }
+
+    let excuses = [
+        "Bonjour, veuillez excuser mon absence car ",
+        "Je m'excuse sincèrement, mais ",
+        "Suite à un problème imprévu, ",
+        "Je n'ai malheureusement pas pu être présent aujourd'hui car ",
+        "Merci de votre compréhension, "
+    ];
+
+    let random = excuses[Math.floor(Math.random() * excuses.length)];
+
+    document.getElementById("result").innerHTML =
+    random + text + ".";
+}
+</script>
+
+</body>
+</html>
