@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GPT HTML Generator 💜</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+background:#0b0f19;
+color:white;
+height:100vh;
+overflow:hidden;
+}
+
+.topbar{
+height:70px;
+border-bottom:1px solid rgba(255,255,255,0.08);
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 30px;
+background:rgba(0,0,0,0.2);
+backdrop-filter:blur(12px);
+}
+
+.logo h1{
+font-size:28px;
+}
+
+.logo p{
+font-size:13px;
+opacity:0.5;
+margin-top:4px;
+}
+
+.badge{
+padding:10px 18px;
+border-radius:14px;
+background:rgba(124,58,237,0.15);
+border:1px solid rgba(124,58,237,0.4);
+color:#c4b5fd;
+font-size:14px;
+}
+
+.container{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+padding:20px;
+height:calc(100vh - 70px);
+}
+
+.panel{
+background:rgba(255,255,255,0.04);
+border:1px solid rgba(255,255,255,0.08);
+border-radius:30px;
+padding:25px;
+backdrop-filter:blur(12px);
+display:flex;
+flex-direction:column;
+overflow:hidden;
+}
+
+.panel h2{
+font-size:24px;
+margin-bottom:10px;
+}
+
+.panel p{
+font-size:14px;
+opacity:0.6;
+margin-bottom:20px;
+}
+
+textarea{
+flex:1;
+background:#0f172a;
+border:none;
+outline:none;
+resize:none;
+border-radius:24px;
+padding:20px;
+color:white;
+font-size:15px;
+line-height:1.6;
+border:1px solid rgba(255,255,255,0.08);
+}
+
+button{
+margin-top:20px;
+height:60px;
+border:none;
+border-radius:20px;
+background:#7c3aed;
+color:white;
+font-size:16px;
+cursor:pointer;
+transition:0.2s;
+}
+
+button:hover{
+background:#8b5cf6;
+}
+
+.preview{
+flex:1;
+background:white;
+border-radius:24px;
+overflow:hidden;
+border:1px solid rgba(255,255,255,0.08);
+}
+
+iframe{
+width:100%;
+height:100%;
+border:none;
+background:white;
+}
+
+.code{
+margin-top:20px;
+background:#0f172a;
+border-radius:24px;
+padding:20px;
+overflow:auto;
+height:220px;
+border:1px solid rgba(255,255,255,0.08);
+}
+
+pre{
+white-space:pre-wrap;
+font-size:12px;
+color:#86efac;
+}
+
+.copy{
+margin-top:15px;
+height:50px;
+background:#1e293b;
+}
+
+@media(max-width:1000px){
+
+.container{
+grid-template-columns:1fr;
+overflow:auto;
+height:auto;
+}
+
+body{
+overflow:auto;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+
+<div class="logo">
+<h1>GPT HTML Generator</h1>
+<p>Generate HTML with natural language</p>
+</div>
+
+<div class="badge">
+Frontend Only
+</div>
+
+</div>
+
+<div class="container">
+
+<!-- LEFT -->
+
+<div class="panel">
+
+<h2>Prompt</h2>
+
+<p>
+Describe a component or full page in natural language.
+</p>
+
+<textarea id="prompt" placeholder="Example: Create a modern SaaS hero section with dark mode, glowing buttons and pricing cards"></textarea>
+
+<button onclick="generateHTML()">
+Generate HTML
+</button>
+
+</div>
+
+<!-- RIGHT -->
+
+<div class="panel">
+
+<h2>Live Preview</h2>
+
+<p>
+Real-time HTML rendering directly in browser.
+</p>
+
+<div class="preview">
+<iframe id="preview"></iframe>
+</div>
+
+<button class="copy" onclick="copyHTML()">
+Copy HTML
+</button>
+
+<div class="code">
+<pre id="code"></pre>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+let generatedHTML = ""
+
+function generateHTML(){
+
+const prompt =
+document.getElementById("prompt").value.toLowerCase()
+
+if(!prompt.trim()) return
+
+// HERO
+if(
+prompt.includes("hero") ||
+prompt.includes("landing")
+){
+
+generatedHTML = `
+<section style="
+height:100vh;
+background:#0f172a;
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+font-family:Arial;
+color:white;
+padding:40px;
+">
+
+<div style="max-width:900px;">
+
+<div style="
+display:inline-block;
+padding:10px 20px;
+border-radius:999px;
+background:rgba(124,58,237,0.2);
+color:#c4b5fd;
+margin-bottom:30px;
+">
+AI Generated Section
+</div>
+
+<h1 style="
+font-size:72px;
+line-height:1.1;
+margin-bottom:25px;
+">
+Build modern websites with AI
+</h1>
+
+<p style="
+font-size:20px;
+opacity:0.7;
+line-height:1.8;
+margin-bottom:40px;
+">
+Generate beautiful HTML layouts instantly using natural language prompts.
+</p>
+
+<div style="
+display:flex;
+gap:20px;
+justify-content:center;
+">
+
+<button style="
+padding:16px 32px;
+border:none;
+border-radius:18px;
+background:#7c3aed;
+color:white;
+font-size:16px;
+cursor:pointer;
+">
+Get Started
+</button>
+
+<button style="
+padding:16px 32px;
+border:none;
+border-radius:18px;
+background:#1e293b;
+color:white;
+font-size:16px;
+cursor:pointer;
+">
+Live Demo
+</button>
+
+</div>
+
+</div>
+
+</section>
+`
+}
+
+// PRICING
+else if(
+prompt.includes("pricing") ||
+prompt.includes("tarif")
+){
+
+generatedHTML = `
+<section style="
+padding:80px;
+background:#0f172a;
+font-family:Arial;
+color:white;
+">
+
+<h1 style="
+font-size:56px;
+text-align:center;
+margin-bottom:60px;
+">
+Pricing Plans
+</h1>
+
+<div style="
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:25px;
+max-width:1200px;
+margin:auto;
+">
+
+<div style="
+background:#111827;
+padding:40px;
+border-radius:28px;
+">
+<h2>Starter</h2>
+<h3 style="font-size:42px;margin:20px 0;">
+$9
+</h3>
+
+<button style="
+width:100%;
+padding:14px;
+border:none;
+border-radius:16px;
+background:#7c3aed;
+color:white;
+cursor:pointer;
+">
+Choose
+</button>
+</div>
+
+<div style="
+background:#7c3aed;
+padding:40px;
+border-radius:28px;
+">
+<h2>Pro</h2>
+<h3 style="font-size:42px;margin:20px 0;">
+$29
+</h3>
+
+<button style="
+width:100%;
+padding:14px;
+border:none;
+border-radius:16px;
+background:white;
+color:black;
+cursor:pointer;
+">
+Choose
+</button>
+</div>
+
+<div style="
+background:#111827;
+padding:40px;
+border-radius:28px;
+">
+<h2>Enterprise</h2>
+<h3 style="font-size:42px;margin:20px 0;">
+$99
+</h3>
+
+<button style="
+width:100%;
+padding:14px;
+border:none;
+border-radius:16px;
+background:#7c3aed;
+color:white;
+cursor:pointer;
+">
+Choose
+</button>
+</div>
+
+</div>
+
+</section>
+`
+}
+
+// DEFAULT
+else{
+
+generatedHTML = `
+<section style="
+min-height:100vh;
+background:#0f172a;
+padding:80px;
+font-family:Arial;
+color:white;
+">
+
+<div style="
+max-width:1000px;
+margin:auto;
+">
+
+<div style="
+display:inline-block;
+padding:10px 20px;
+border-radius:999px;
+background:rgba(124,58,237,0.2);
+color:#c4b5fd;
+margin-bottom:30px;
+">
+Generated Component
+</div>
+
+<h1 style="
+font-size:58px;
+margin-bottom:30px;
+">
+AI Generated Layout
+</h1>
+
+<p style="
+font-size:20px;
+line-height:1.8;
+opacity:0.7;
+margin-bottom:50px;
+">
+Prompt detected:
+<br><br>
+${prompt}
+</p>
+
+<div style="
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:25px;
+">
+
+<div style="
+background:#111827;
+padding:30px;
+border-radius:24px;
+">
+<h2>Modern UI</h2>
+<p style="opacity:0.7;">
+Beautiful dark SaaS design.
+</p>
+</div>
+
+<div style="
+background:#111827;
+padding:30px;
+border-radius:24px;
+">
+<h2>Responsive</h2>
+<p style="opacity:0.7;">
+Works on all devices.
+</p>
+</div>
+
+<div style="
+background:#111827;
+padding:30px;
+border-radius:24px;
+">
+<h2>Fast</h2>
+<p style="opacity:0.7;">
+Instant frontend rendering.
+</p>
+</div>
+
+</div>
+
+<button style="
+margin-top:40px;
+padding:16px 34px;
+border:none;
+border-radius:18px;
+background:#7c3aed;
+color:white;
+font-size:16px;
+cursor:pointer;
+">
+Example Button
+</button>
+
+</div>
+
+</section>
+`
+}
+
+document.getElementById("preview").srcdoc =
+generatedHTML
+
+document.getElementById("code").textContent =
+generatedHTML
+
+}
+
+function copyHTML(){
+
+navigator.clipboard.writeText(generatedHTML)
+
+alert("HTML copied 💜")
+
+}
+
+</script>
+
+</body>
+</html>
