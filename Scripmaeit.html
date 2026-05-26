@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mario 2D</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    overflow:hidden;
+    background:#5c94fc;
+    font-family:Arial;
+}
+
+#game{
+    position:relative;
+    width:100vw;
+    height:100vh;
+    overflow:hidden;
+    background:url('fond.png') repeat-x;
+    background-size:cover;
+}
+
+#ground{
+    position:absolute;
+    bottom:0;
+    width:5000px;
+    height:80px;
+    background:#2f9e44;
+}
+
+#mario{
+    position:absolute;
+    width:60px;
+    height:60px;
+    left:100px;
+    bottom:80px;
+    image-rendering:pixelated;
+}
+
+.enemy{
+    position:absolute;
+    width:50px;
+    height:50px;
+    bottom:80px;
+}
+
+.block{
+    position:absolute;
+    width:60px;
+    height:60px;
+}
+
+.coin{
+    position:absolute;
+    width:40px;
+    height:40px;
+}
+
+#mobile-controls{
+    position:absolute;
+    bottom:20px;
+    width:100%;
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    z-index:200;
+}
+
+#mobile-controls button{
+    width:80px;
+    height:80px;
+    border:none;
+    border-radius:20px;
+    font-size:35px;
+    background:white;
+    opacity:0.8;
+}
+
+#ui{
+    position:absolute;
+    top:20px;
+    left:20px;
+    color:white;
+    font-size:30px;
+    z-index:100;
+    text-shadow:2px 2px 4px black;
+}
+
+</style>
+</head>
+<body>
+
+<div id="game">
+
+<div id="ui">
+Score : <span id="score">0</span>
+</div>
+
+<img id="mario" src="mario.png">
+
+<div id="ground"></div>
+
+<img class="enemy" id="enemy1" src="goomba.png" style="left:900px;">
+<img class="enemy" id="enemy2" src="goomba.png" style="left:1500px;">
+
+<img class="block" src="bloc.png" style="left:500px; bottom:250px; position:absolute;">
+<img class="block" src="bloc.png" style="left:560px; bottom:250px; position:absolute;">
+<img class="block" src="bloc.png" style="left:620px; bottom:250px; position:absolute;">
+
+<img class="coin" src="coin.png" style="left:520px; bottom:340px; position:absolute;">
+
+
+<div id="mobile-controls">
+    <button id="leftBtn">⬅️</button>
+    <button id="jumpBtn">⬆️</button>
+    <button id="rightBtn">➡️</button>
+</div>
+
+</div>
+
+<script>
+
+const mario = document.getElementById('mario');
+const scoreDisplay = document.getElementById('score');
+const enemies = document.querySelectorAll('.enemy');
+const coins = document.querySelectorAll('.coin');
+
+let marioX = 100;
+let marioY = 80;
+let velocityY = 0;
+let gravity = 0.8;
+let jumping = false;
+let score = 0;
+
+const keys = {};
+
+window.addEventListener('keydown', (e)=>{
+    keys[e.key] = true;
+
+    if((e.key === ' ' || e.key === 'ArrowUp') && !jumping){
+        velocityY = 16;
+        jumping = true;
+    }
+});
+
+window.addEventListener('keyup', (e)=>{
+    keys[e.key] = false;
+});
+
+const leftBtn = document.getElementById('leftBtn');
+const rightBtn = document.getElementById('rightBtn');
+const jumpBtn = document.getElementById('jumpBtn');
+
+leftBtn.addEventListener('touchstart', ()=>{
+    keys['ArrowLeft'] = true;
+});
+
+leftBtn.addEventListener('touchend', ()=>{
+    keys['ArrowLeft'] = false;
+});
+
+rightBtn.addEventListener('touchstart', ()=>{
+    keys['ArrowRight'] = true;
+});
+
+rightBtn.addEventListener('touchend', ()=>{
+    keys['ArrowRight'] = false;
+});
+
+jumpBtn.addEventListener('touchstart', ()=>{
+
+    if(!jumping){
+        velocityY = 16;
+        jumping = true;
+    }
+
+});
+
+function moveMario(){
+
+    if(keys['ArrowRight']){
+        marioX += 6;
+    }
+
+    if(keys['ArrowLeft']){
+        marioX -= 6;
+    }
+
+    velocityY -= gravity;
+    marioY += velocityY;
+
+    if(marioY <= 80){
+        marioY = 80;
+        velocityY = 0;
+        jumping = false;
+    }
+
+    mario.style.left = marioX + 'px';
+    mario.style.bottom = marioY + 'px';
+}
+
+function collision(a,b){
+    const ar = a.getBoundingClientRect();
+    const br = b.getBoundingClientRect();
+
+    return !(
+        ar.top > br.bottom ||
+        ar.bottom < br.top ||
+        ar.right < br.left ||
+        ar.left > br.right
+    );
+}
+
+function checkEnemies(){
+
+    enemies.forEach(enemy=>{
+
+        if(collision(mario, enemy)){
+
+            if(velocityY < 0){
+                enemy.style.display = 'none';
+                velocityY = 12;
+                score += 100;
+            }else{
+                alert('Game Over 😢');
+                location.reload();
+            }
+        }
+    });
+}
+
+function checkCoins(){
+
+    coins.forEach(coin=>{
+
+        if(coin.style.display !== 'none' && collision(mario, coin)){
+            coin.style.display = 'none';
+            score += 50;
+        }
+    });
+
+    scoreDisplay.innerText = score;
+}
+
+function gameLoop(){
+
+    moveMario();
+    checkEnemies();
+    checkCoins();
+
+    requestAnimationFrame(gameLoop);
+}
+
+gameLoop();
+
+</script>
+
+</body>
+</html>
