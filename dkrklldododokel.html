@@ -2,11 +2,11 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Site Builder</title>
+<title>Mini Site Builder</title>
 <style>
 body {
-    font-family: Arial;
     margin: 0;
+    font-family: Arial;
     background: #0f172a;
     color: white;
 }
@@ -22,7 +22,6 @@ input, textarea {
     padding: 10px;
     border: none;
     border-radius: 8px;
-    font-size: 14px;
 }
 
 textarea {
@@ -34,7 +33,7 @@ textarea {
 
 button {
     margin-top: 10px;
-    padding: 10px 15px;
+    padding: 10px;
     border: none;
     border-radius: 8px;
     background: #22c55e;
@@ -42,19 +41,20 @@ button {
     cursor: pointer;
 }
 
-button:hover {
-    background: #16a34a;
-}
-
 .pages {
     padding: 15px;
 }
 
-.page-link {
+.link {
     color: #60a5fa;
     cursor: pointer;
-    margin: 5px 0;
     display: block;
+    margin-top: 5px;
+}
+
+.view {
+    padding: 15px;
+    border-top: 1px solid #1f2937;
 }
 </style>
 </head>
@@ -62,17 +62,22 @@ button:hover {
 <body>
 
 <div class="top">
-    <h2>🧠 Créateur de site</h2>
+    <h2>🧠 Site Builder (HTML seul)</h2>
 
-    <input id="name" placeholder="Nom de la page (ex: mapage)">
-    <textarea id="code" placeholder="Écris ton contenu HTML ici..."></textarea>
+    <input id="name" placeholder="nom de page (ex: exemple)">
+    <textarea id="code" placeholder="contenu HTML ici"></textarea>
 
-    <button onclick="createPage()">➕ Créer la page</button>
+    <button onclick="createPage()">➕ Créer page</button>
 </div>
 
 <div class="pages">
     <h3>📄 Pages créées :</h3>
     <div id="list"></div>
+</div>
+
+<div class="view" id="view">
+    <h3>🌐 Aperçu</h3>
+    <div id="content">Clique sur une page</div>
 </div>
 
 <script>
@@ -87,8 +92,8 @@ function createPage() {
     pages[name] = code;
 
     let link = document.createElement("div");
-    link.className = "page-link";
-    link.innerText = "dodo.com/" + name;
+    link.className = "link";
+    link.innerText = "monsite.com/" + name;
 
     link.onclick = () => openPage(name);
 
@@ -99,9 +104,7 @@ function createPage() {
 }
 
 function openPage(name) {
-    let win = window.open();
-    win.document.write(pages[name]);
-    win.document.close();
+    document.getElementById("content").innerHTML = pages[name];
 }
 </script>
 
