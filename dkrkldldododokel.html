@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Site Builder</title>
+<style>
+body {
+    font-family: Arial;
+    margin: 0;
+    background: #0f172a;
+    color: white;
+}
+
+.top {
+    padding: 15px;
+    background: #111827;
+}
+
+input, textarea {
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+textarea {
+    height: 120px;
+    font-family: monospace;
+    background: #0b1220;
+    color: #22c55e;
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    background: #22c55e;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #16a34a;
+}
+
+.pages {
+    padding: 15px;
+}
+
+.page-link {
+    color: #60a5fa;
+    cursor: pointer;
+    margin: 5px 0;
+    display: block;
+}
+</style>
+</head>
+
+<body>
+
+<div class="top">
+    <h2>🧠 Créateur de site</h2>
+
+    <input id="name" placeholder="Nom de la page (ex: mapage)">
+    <textarea id="code" placeholder="Écris ton contenu HTML ici..."></textarea>
+
+    <button onclick="createPage()">➕ Créer la page</button>
+</div>
+
+<div class="pages">
+    <h3>📄 Pages créées :</h3>
+    <div id="list"></div>
+</div>
+
+<script>
+let pages = {};
+
+function createPage() {
+    let name = document.getElementById("name").value.trim();
+    let code = document.getElementById("code").value;
+
+    if (!name || !code) return;
+
+    pages[name] = code;
+
+    let link = document.createElement("div");
+    link.className = "page-link";
+    link.innerText = "dodo.com/" + name;
+
+    link.onclick = () => openPage(name);
+
+    document.getElementById("list").appendChild(link);
+
+    document.getElementById("name").value = "";
+    document.getElementById("code").value = "";
+}
+
+function openPage(name) {
+    let win = window.open();
+    win.document.write(pages[name]);
+    win.document.close();
+}
+</script>
+
+</body>
+</html>
