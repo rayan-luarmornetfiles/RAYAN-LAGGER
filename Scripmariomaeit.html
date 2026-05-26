@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mini Mario Full Code</title>
+
+<style>
+body{
+    margin:0;
+    overflow:hidden;
+    background:linear-gradient(#5c94fc,#87ceeb);
+    font-family:Arial;
+}
+
+#game{
+    position:relative;
+    width:5000px;
+    height:100vh;
+}
+
+#ground{
+    position:absolute;
+    bottom:0;
+    width:5000px;
+    height:100px;
+    background:#2e8b57;
+}
+
+#mario{
+    position:absolute;
+    width:60px;
+    height:60px;
+    left:120px;
+    bottom:100px;
+    font-size:50px;
+    transition:0.05s;
+}
+
+.enemy{
+    position:absolute;
+    width:60px;
+    height:60px;
+    bottom:100px;
+    font-size:45px;
+}
+
+.coin{
+    position:absolute;
+    font-size:35px;
+}
+
+.block{
+    position:absolute;
+    width:60px;
+    height:60px;
+    background:#b5651d;
+    border:4px solid #6b3e12;
+}
+
+#ui{
+    position:fixed;
+    top:20px;
+    left:20px;
+    color:white;
+    font-size:30px;
+    z-index:999;
+    text-shadow:2px 2px 5px black;
+}
+
+#mobile{
+    position:fixed;
+    bottom:20px;
+    width:100%;
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    z-index:999;
+}
+
+#mobile button{
+    width:90px;
+    height:90px;
+    border:none;
+    border-radius:20px;
+    font-size:35px;
+    background:white;
+    opacity:0.8;
+}
+
+.cloud{
+    position:absolute;
+    font-size:60px;
+    animation:float 20s linear infinite;
+}
+
+@keyframes float{
+    from{transform:translateX(0);}
+    to{transform:translateX(300px);}
+}
+
+#flag{
+    position:absolute;
+    left:4600px;
+    bottom:100px;
+    font-size:120px;
+}
+
+</style>
+</head>
+<body>
+
+<div id="ui">
+Score : <span id="score">0</span> |
+Vies : <span id="lives">3</span>
+</div>
+
+<div id="game">
+
+<div class="cloud" style="left:300px; top:100px;">☁️</div>
+<div class="cloud" style="left:1200px; top:150px;">☁️</div>
+<div class="cloud" style="left:2200px; top:90px;">☁️</div>
+
+<div id="mario">👨</div>
+
+<div class="enemy" style="left:900px;">👾</div>
+<div class="enemy" style="left:1700px;">👾</div>
+<div class="enemy" style="left:2800px;">👾</div>
+
+<div class="coin" style="left:700px; bottom:300px;">🪙</div>
+<div class="coin" style="left:1500px; bottom:350px;">🪙</div>
+<div class="coin" style="left:2400px; bottom:280px;">🪙</div>
+
+<div class="block" style="left:650px; bottom:220px;"></div>
+<div class="block" style="left:710px; bottom:220px;"></div>
+<div class="block" style="left:770px; bottom:220px;"></div>
+
+<div class="block" style="left:1450px; bottom:280px;"></div>
+<div class="block" style="left:1510px; bottom:280px;"></div>
+
+<div id="flag">🏁</div>
+
+<div id="ground"></div>
+
+</div>
+
+<div id="mobile">
+<button id="left">⬅️</button>
+<button id="jump">⬆️</button>
+<button id="right">➡️</button>
+</div>
+
+<script>
+
+const mario = document.getElementById('mario');
+const enemies = document.querySelectorAll('.enemy');
+const coins = document.querySelectorAll('.coin');
+const scoreText = document.getElementById('score');
+const livesText = document.getElementById('lives');
+const flag = document.getElementById('flag');
+
+let x = 120;
+let y = 100;
+let velocityY = 0;
+let gravity = 0.8;
+let jumping = false;
+let score = 0;
+let lives = 3;
+
+const keys = {};
+
+function updateMario(){
+
+    if(keys['right']) x += 7;
+    if(keys['left']) x -= 7;
+
+    velocityY -= gravity;
+    y += velocityY;
+
+    if(y <= 100){
+        y = 100;
+        velocityY = 0;
+        jumping = false;
+    }
+
+    mario.style.left = x + 'px';
+    mario.style.bottom = y + 'px';
+
+    window.scrollTo(x - 300,0);
+}
+
+function jump(){
+    if(!jumping){
+        velocityY = 16;
+        jumping = true;
+    }
+}
+
+function collide(a,b){
+
+    const ar = a.getBoundingClientRect();
+    const br = b.getBoundingClientRect();
+
+    return !(
+        ar.top > br.bottom ||
+        ar.bottom < br.top ||
+        ar.right < br.left ||
+        ar.left > br.right
+    );
+}
+
+function checkEnemies(){
+
+    enemies.forEach(enemy=>{
+
+        if(enemy.style.display !== 'none' && collide(mario, enemy)){
+
+            if(velocityY < 0){
+                enemy.style.display = 'none';
+                velocityY = 12;
+                score += 100;
+            }else{
+                lives--;
+                livesText.innerText = lives;
+                x = 120;
+
+                if(lives <= 0){
+                    alert('Game Over 😢');
+                    location.reload();
+                }
+            }
+        }
+    });
+}
+
+function checkCoins(){
+
+    coins.forEach(coin=>{
+
+        if(coin.style.display !== 'none' && collide(mario, coin)){
+            coin.style.display = 'none';
+            score += 50;
+            scoreText.innerText = score;
+        }
+    });
+}
+
+function checkWin(){
+
+    if(collide(mario, flag)){
+        alert('Bravo 🎉 Niveau terminé !');
+    }
+}
+
+window.addEventListener('keydown', e=>{
+
+    if(e.key === 'ArrowRight') keys['right'] = true;
+    if(e.key === 'ArrowLeft') keys['left'] = true;
+    if(e.key === 'ArrowUp' || e.key === ' ') jump();
+
+});
+
+window.addEventListener('keyup', e=>{
+
+    if(e.key === 'ArrowRight') keys['right'] = false;
+    if(e.key === 'ArrowLeft') keys['left'] = false;
+
+});
+
+left.addEventListener('touchstart',()=> keys['left']=true);
+left.addEventListener('touchend',()=> keys['left']=false);
+
+right.addEventListener('touchstart',()=> keys['right']=true);
+right.addEventListener('touchend',()=> keys['right']=false);
+
+jumpBtn = document.getElementById('jump');
+jumpBtn.addEventListener('touchstart', jump);
+
+function loop(){
+
+    updateMario();
+    checkEnemies();
+    checkCoins();
+    checkWin();
+
+    requestAnimationFrame(loop);
+}
+
+loop();
+
+</script>
+
+</body>
+</html>
