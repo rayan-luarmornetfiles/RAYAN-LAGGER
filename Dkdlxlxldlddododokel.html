@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Carte virtuelle fictive</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #0b1220;
+    color: white;
+    text-align: center;
+    padding-top: 40px;
+}
+
+.card {
+    margin: 30px auto;
+    width: 360px;
+    height: 220px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #1e3a8a, #06b6d4);
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    position: relative;
+    text-align: left;
+}
+
+.fake {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 12px;
+    background: rgba(0,0,0,0.5);
+    padding: 4px 8px;
+    border-radius: 8px;
+}
+
+.number {
+    font-size: 20px;
+    letter-spacing: 2px;
+    margin-top: 40px;
+}
+
+.name {
+    margin-top: 20px;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+.bottom {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    font-size: 14px;
+}
+
+button {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 10px;
+    background: #22c55e;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+button:hover {
+    background: #16a34a;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🎴 Générateur de carte virtuelle (DEMO)</h1>
+
+<button onclick="generateCard()">Générer carte</button>
+
+<div class="card">
+    <div class="fake">FAKE / DEMO</div>
+
+    <div id="number" class="number">#### #### #### ####</div>
+    <div id="name" class="name">NOM PRÉNOM</div>
+
+    <div class="bottom">
+        <div>
+            EXP: <span id="exp">MM/AA</span><br>
+            CVV: <span id="cvv">###</span>
+        </div>
+
+        <div>
+            💰 <span id="money">0€</span>
+        </div>
+    </div>
+</div>
+
+<script>
+function randBlock() {
+    return Math.floor(1000 + Math.random() * 9000);
+}
+
+function randName() {
+    const names = ["Lucas Martin", "Emma Dubois", "Noah Bernard", "Lina Robert", "Hugo Morel"];
+    return names[Math.floor(Math.random() * names.length)];
+}
+
+function randExpiry() {
+    let month = Math.floor(Math.random() * 12) + 1;
+    let year = new Date().getFullYear() + Math.floor(Math.random() * 6);
+    return `${String(month).padStart(2, '0')}/${String(year).slice(-2)}`;
+}
+
+function randCVV() {
+    return Math.floor(100 + Math.random() * 900);
+}
+
+function generateCard() {
+    let number = `${randBlock()} ${randBlock()} ${randBlock()} ${randBlock()}`;
+    let money = Math.floor(Math.random() * 500000) + "€";
+
+    document.getElementById("number").innerText = number;
+    document.getElementById("name").innerText = randName();
+    document.getElementById("exp").innerText = randExpiry();
+    document.getElementById("cvv").innerText = randCVV();
+    document.getElementById("money").innerText = money;
+}
+</script>
+
+</body>
+</html>
