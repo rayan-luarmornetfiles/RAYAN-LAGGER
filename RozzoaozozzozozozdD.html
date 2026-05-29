@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>YourTube</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 
 <style>
+
 *{
   margin:0;
   padding:0;
@@ -18,10 +19,9 @@
   --bg:#0f0f0f;
   --surface:#181818;
   --surface2:#272727;
-  --text:#fff;
-  --muted:#aaa;
+  --text:#ffffff;
+  --muted:#aaaaaa;
   --border:#333;
-  --accent:#3ea6ff;
   --sidebar:230px;
   --header:60px;
 }
@@ -41,11 +41,11 @@ header{
   right:0;
   height:var(--header);
   background:var(--bg);
-  border-bottom:1px solid var(--border);
   display:flex;
   align-items:center;
   justify-content:space-between;
   padding:0 20px;
+  border-bottom:1px solid var(--border);
   z-index:1000;
 }
 
@@ -65,10 +65,6 @@ header{
   display:flex;
   align-items:center;
   justify-content:center;
-}
-
-.logo-icon span{
-  font-size:14px;
 }
 
 .search-bar{
@@ -91,50 +87,25 @@ header{
   font-size:15px;
 }
 
-.search-bar input:focus{
-  border-color:var(--accent);
-}
-
 .search-bar button{
   width:70px;
   border:none;
   background:var(--surface2);
+  color:white;
   border-radius:0 25px 25px 0;
-  color:white;
   cursor:pointer;
   font-size:18px;
-}
-
-.header-icons{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.icon-btn{
-  width:40px;
-  height:40px;
-  border:none;
-  border-radius:50%;
-  background:none;
-  color:white;
-  cursor:pointer;
-  font-size:18px;
-}
-
-.icon-btn:hover{
-  background:var(--surface2);
 }
 
 .avatar{
-  width:35px;
-  height:35px;
+  width:36px;
+  height:36px;
   border-radius:50%;
   background:linear-gradient(135deg,#ff6b6b,#feca57);
   display:flex;
   align-items:center;
   justify-content:center;
-  font-weight:700;
+  font-weight:bold;
 }
 
 /* LAYOUT */
@@ -152,17 +123,13 @@ aside{
   top:var(--header);
   bottom:0;
   left:0;
-  overflow-y:auto;
   background:var(--bg);
   border-right:1px solid var(--border);
   padding-top:10px;
 }
 
 .nav-item{
-  display:flex;
-  align-items:center;
-  gap:20px;
-  padding:12px 20px;
+  padding:14px 20px;
   cursor:pointer;
   transition:.2s;
 }
@@ -174,12 +141,6 @@ aside{
 .nav-item.active{
   background:var(--surface2);
   font-weight:700;
-}
-
-.divider{
-  height:1px;
-  background:var(--border);
-  margin:12px 0;
 }
 
 /* MAIN */
@@ -201,10 +162,10 @@ main{
 
 .chip{
   border:none;
-  padding:8px 14px;
-  border-radius:10px;
   background:var(--surface2);
   color:white;
+  padding:8px 14px;
+  border-radius:10px;
   cursor:pointer;
   white-space:nowrap;
 }
@@ -214,7 +175,7 @@ main{
   color:black;
 }
 
-/* VIDEOS */
+/* GRID */
 
 .video-grid{
   display:grid;
@@ -239,16 +200,16 @@ main{
 }
 
 .video-card:hover img{
-  transform:scale(1.04);
+  transform:scale(1.05);
 }
 
 .play{
   position:absolute;
   inset:0;
-  background:rgba(0,0,0,.4);
   display:flex;
   align-items:center;
   justify-content:center;
+  background:rgba(0,0,0,.4);
   opacity:0;
   transition:.2s;
 }
@@ -288,11 +249,11 @@ main{
   width:38px;
   height:38px;
   border-radius:50%;
+  background:#ff5722;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-weight:700;
-  background:#ff5722;
+  font-weight:bold;
 }
 
 .video-meta{
@@ -331,7 +292,7 @@ main{
 
 .modal{
   width:100%;
-  max-width:950px;
+  max-width:1000px;
   background:var(--surface);
   border-radius:16px;
   overflow:hidden;
@@ -343,12 +304,11 @@ main{
   background:black;
 }
 
-.player iframe{
+.player video{
   position:absolute;
   inset:0;
   width:100%;
   height:100%;
-  border:none;
 }
 
 .close-btn{
@@ -361,8 +321,8 @@ main{
   border-radius:50%;
   background:rgba(0,0,0,.7);
   color:white;
-  cursor:pointer;
   font-size:18px;
+  cursor:pointer;
   z-index:10;
 }
 
@@ -387,19 +347,20 @@ main{
 
 @media(max-width:900px){
 
-  aside{
-    display:none;
-  }
+aside{
+  display:none;
+}
 
-  main{
-    margin-left:0;
-  }
+main{
+  margin-left:0;
+}
 
-  .search-bar{
-    margin:0 10px;
-  }
+.search-bar{
+  margin:0 10px;
+}
 
 }
+
 </style>
 </head>
 
@@ -408,9 +369,7 @@ main{
 <header>
 
 <div class="logo">
-  <div class="logo-icon">
-    <span>▶</span>
-  </div>
+  <div class="logo-icon">▶</div>
   <span>YourTube</span>
 </div>
 
@@ -419,11 +378,7 @@ main{
   <button onclick="doSearch()">🔍</button>
 </div>
 
-<div class="header-icons">
-  <button class="icon-btn">🔔</button>
-  <button class="icon-btn">📤</button>
-  <div class="avatar">U</div>
-</div>
+<div class="avatar">U</div>
 
 </header>
 
@@ -434,24 +389,36 @@ main{
 <div class="nav-item active">🏠 Accueil</div>
 <div class="nav-item">🎬 Shorts</div>
 <div class="nav-item">📺 Abonnements</div>
-
-<div class="divider"></div>
-
 <div class="nav-item">🔥 Tendances</div>
 <div class="nav-item">🎵 Musique</div>
 <div class="nav-item">🎮 Gaming</div>
-<div class="nav-item">📰 News</div>
 
 </aside>
 
 <main>
 
 <div class="chips">
-  <button class="chip active" onclick="filterCategory('Tous',this)">Tous</button>
-  <button class="chip" onclick="filterCategory('Musique',this)">Musique</button>
-  <button class="chip" onclick="filterCategory('Science',this)">Science</button>
-  <button class="chip" onclick="filterCategory('Nature',this)">Nature</button>
-  <button class="chip" onclick="filterCategory('Programmation',this)">Programmation</button>
+
+<button class="chip active" onclick="filterCategory('Tous',this)">
+Tous
+</button>
+
+<button class="chip" onclick="filterCategory('Musique',this)">
+Musique
+</button>
+
+<button class="chip" onclick="filterCategory('Science',this)">
+Science
+</button>
+
+<button class="chip" onclick="filterCategory('Nature',this)">
+Nature
+</button>
+
+<button class="chip" onclick="filterCategory('Détente',this)">
+Détente
+</button>
+
 </div>
 
 <div class="video-grid" id="videoGrid"></div>
@@ -460,7 +427,7 @@ main{
 
 </div>
 
-<!-- MODAL -->
+<!-- MODAL VIDEO -->
 
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
 
@@ -468,13 +435,15 @@ main{
 
 <div class="player">
 
-<button class="close-btn" onclick="closeVideo()">✕</button>
+<button class="close-btn" onclick="closeVideo()">
+✕
+</button>
 
-<iframe
-id="videoFrame"
-allowfullscreen
-allow="autoplay">
-</iframe>
+<video
+id="videoPlayer"
+controls
+autoplay>
+</video>
 
 </div>
 
@@ -501,48 +470,70 @@ views:"18 M vues",
 time:"il y a 12 ans",
 duration:"9:56",
 cat:"Nature",
-ytId:"aqz-KE-bpKQ",
-thumb:"https://img.youtube.com/vi/aqz-KE-bpKQ/mqdefault.jpg"
+
+video:"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+
+thumb:"https://peach.blender.org/wp-content/uploads/title_anouncement.jpg?x11217"
 },
 
 {
-title:"LoFi Hip Hop Radio",
-channel:"ChillHop",
-views:"120 M vues",
-time:"il y a 2 ans",
-duration:"LIVE",
-cat:"Musique",
-ytId:"jfKfPfyJRdk",
-thumb:"https://img.youtube.com/vi/jfKfPfyJRdk/mqdefault.jpg"
-},
-
-{
-title:"Earth from Space",
-channel:"NASA",
-views:"9 M vues",
-time:"il y a 4 ans",
-duration:"26:03",
+title:"Elephant Dream",
+channel:"Blender",
+views:"4 M vues",
+time:"il y a 10 ans",
+duration:"10:53",
 cat:"Science",
-ytId:"RtU_mdL2vBM",
-thumb:"https://img.youtube.com/vi/RtU_mdL2vBM/mqdefault.jpg"
+
+video:"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+
+thumb:"https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Elephants_Dream_s1_proog.jpg/640px-Elephants_Dream_s1_proog.jpg"
 },
 
 {
-title:"How Internet Works",
-channel:"Aaron",
-views:"6 M vues",
-time:"il y a 8 ans",
-duration:"4:48",
-cat:"Programmation",
-ytId:"7_LPdttKXPc",
-thumb:"https://img.youtube.com/vi/7_LPdttKXPc/mqdefault.jpg"
+title:"For Bigger Escape",
+channel:"Google",
+views:"2 M vues",
+time:"il y a 5 ans",
+duration:"15:00",
+cat:"Détente",
+
+video:"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscape.mp4",
+
+thumb:"https://picsum.photos/600/400?random=4"
+},
+
+{
+title:"Subaru Outback",
+channel:"Cars TV",
+views:"1 M vues",
+time:"il y a 2 ans",
+duration:"2:30",
+cat:"Nature",
+
+video:"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4",
+
+thumb:"https://picsum.photos/600/400?random=7"
+},
+
+{
+title:"Tears of Steel",
+channel:"Blender",
+views:"7 M vues",
+time:"il y a 3 ans",
+duration:"12:14",
+cat:"Science",
+
+video:"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+
+thumb:"https://picsum.photos/600/400?random=10"
 }
 
 ];
 
 function renderVideos(list){
 
-const grid = document.getElementById("videoGrid");
+const grid =
+document.getElementById("videoGrid");
 
 grid.innerHTML = "";
 
@@ -556,9 +547,10 @@ return;
 
 }
 
-list.forEach(video => {
+list.forEach(video=>{
 
-const card = document.createElement("div");
+const card =
+document.createElement("div");
 
 card.className = "video-card";
 
@@ -566,7 +558,7 @@ card.innerHTML = `
 
 <div class="thumb">
 
-<img src="${video.thumb}" alt="${video.title}">
+<img src="${video.thumb}">
 
 <div class="play">
 <div class="play-btn">▶</div>
@@ -601,6 +593,7 @@ ${video.views} • ${video.time}
 </div>
 
 </div>
+
 `;
 
 card.addEventListener("click",()=>{
@@ -617,13 +610,16 @@ grid.appendChild(card);
 
 function openVideo(video){
 
-document.getElementById("videoFrame").src =
-`https://www.youtube.com/embed/${video.ytId}?autoplay=1`;
+const player =
+document.getElementById("videoPlayer");
 
-document.getElementById("modalTitle").textContent =
-video.title;
+player.src = video.video;
 
-document.getElementById("modalMeta").textContent =
+document.getElementById("modalTitle")
+.textContent = video.title;
+
+document.getElementById("modalMeta")
+.textContent =
 `${video.channel} • ${video.views}`;
 
 document.getElementById("modalOverlay")
@@ -635,10 +631,15 @@ document.body.style.overflow = "hidden";
 
 function closeVideo(){
 
+const player =
+document.getElementById("videoPlayer");
+
+player.pause();
+
+player.src = "";
+
 document.getElementById("modalOverlay")
 .classList.remove("open");
-
-document.getElementById("videoFrame").src = "";
 
 document.body.style.overflow = "auto";
 
@@ -661,7 +662,7 @@ document.getElementById("searchInput")
 .value
 .toLowerCase();
 
-const filtered = videos.filter(video =>
+const filtered = videos.filter(video=>
 
 video.title.toLowerCase().includes(value) ||
 
@@ -691,7 +692,11 @@ function filterCategory(category,button){
 
 document
 .querySelectorAll(".chip")
-.forEach(chip=>chip.classList.remove("active"));
+.forEach(chip=>{
+
+chip.classList.remove("active");
+
+});
 
 button.classList.add("active");
 
@@ -725,4 +730,4 @@ renderVideos(videos);
 </script>
 
 </body>
-</html>
+  </html>
