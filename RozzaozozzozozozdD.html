@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YourTube</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial,sans-serif;
+    }
+
+    body{
+      background:#0f0f0f;
+      color:white;
+    }
+
+    header{
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      height:60px;
+      background:#181818;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 20px;
+      z-index:1000;
+      border-bottom:1px solid #333;
+    }
+
+    .logo{
+      font-size:24px;
+      font-weight:bold;
+      color:red;
+    }
+
+    .search-bar{
+      display:flex;
+      width:50%;
+    }
+
+    .search-bar input{
+      flex:1;
+      height:40px;
+      background:#121212;
+      border:1px solid #333;
+      color:white;
+      padding:0 15px;
+      border-radius:20px 0 0 20px;
+      outline:none;
+    }
+
+    .search-bar button{
+      width:70px;
+      border:none;
+      background:#272727;
+      color:white;
+      border-radius:0 20px 20px 0;
+      cursor:pointer;
+    }
+
+    main{
+      padding:90px 20px 20px;
+    }
+
+    .video-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+      gap:20px;
+    }
+
+    .video-card{
+      cursor:pointer;
+    }
+
+    .thumbnail{
+      width:100%;
+      border-radius:12px;
+      overflow:hidden;
+      position:relative;
+    }
+
+    .thumbnail img{
+      width:100%;
+      display:block;
+    }
+
+    .duration{
+      position:absolute;
+      bottom:10px;
+      right:10px;
+      background:black;
+      padding:4px 8px;
+      border-radius:5px;
+      font-size:12px;
+    }
+
+    .video-info{
+      display:flex;
+      margin-top:10px;
+      gap:10px;
+    }
+
+    .avatar{
+      width:40px;
+      height:40px;
+      border-radius:50%;
+      background:#ff5722;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:bold;
+    }
+
+    .video-title{
+      font-size:15px;
+      font-weight:bold;
+      margin-bottom:5px;
+    }
+
+    .video-channel,
+    .video-stats{
+      color:#aaa;
+      font-size:13px;
+    }
+
+    .modal{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.9);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:9999;
+      padding:20px;
+    }
+
+    .modal.active{
+      display:flex;
+    }
+
+    .modal-content{
+      width:100%;
+      max-width:1000px;
+      background:#181818;
+      border-radius:15px;
+      overflow:hidden;
+    }
+
+    .video-container{
+      position:relative;
+      width:100%;
+      background:black;
+    }
+
+    video{
+      width:100%;
+      height:auto;
+      display:block;
+      max-height:80vh;
+      background:black;
+    }
+
+    .close-btn{
+      position:absolute;
+      top:10px;
+      right:10px;
+      width:40px;
+      height:40px;
+      border:none;
+      border-radius:50%;
+      background:red;
+      color:white;
+      font-size:20px;
+      cursor:pointer;
+      z-index:10;
+    }
+
+    .modal-info{
+      padding:20px;
+    }
+
+    .modal-title{
+      font-size:22px;
+      margin-bottom:10px;
+    }
+
+    .modal-meta{
+      color:#aaa;
+    }
+
+    @media(max-width:700px){
+      .search-bar{
+        width:100%;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">YourTube</div>
+
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Rechercher une vidéo...">
+    <button onclick="searchVideos()">🔍</button>
+  </div>
+</header>
+
+<main>
+  <div class="video-grid" id="videoGrid"></div>
+</main>
+
+<div class="modal" id="modal">
+  <div class="modal-content">
+
+    <div class="video-container">
+
+      <button class="close-btn" onclick="closeVideo()">✕</button>
+
+      <video id="videoPlayer" controls autoplay>
+        Votre navigateur ne supporte pas la vidéo.
+      </video>
+
+    </div>
+
+    <div class="modal-info">
+      <div class="modal-title" id="modalTitle"></div>
+      <div class="modal-meta" id="modalMeta"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+
+const videos = [
+
+{
+  title:"Big Buck Bunny",
+  channel:"Blender Foundation",
+  views:"18 M vues",
+  time:"Il y a 12 ans",
+  duration:"9:56",
+  video:"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+  thumb:"https://storage.googleapis.com/gtv-videos-bucket/sample/images/BigBuckBunny.jpg"
+},
+
+{
+  title:"Elephants Dream",
+  channel:"Blender",
+  views:"4 M vues",
+  time:"Il y a 10 ans",
+  duration:"10:53",
+  video:"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+  thumb:"https://storage.googleapis.com/gtv-videos-bucket/sample/images/ElephantsDream.jpg"
+},
+
+{
+  title:"For Bigger Escape",
+  channel:"Google",
+  views:"2 M vues",
+  time:"Il y a 5 ans",
+  duration:"15:00",
+  video:"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscape.mp4",
+  thumb:"https://storage.googleapis.com/gtv-videos-bucket/sample/images/ForBiggerEscape.jpg"
+}
+
+];
+
+const grid = document.getElementById("videoGrid");
+
+function renderVideos(list){
+
+  grid.innerHTML = "";
+
+  if(list.length === 0){
+    grid.innerHTML = "<h2>Aucune vidéo trouvée 😢</h2>";
+    return;
+  }
+
+  list.forEach(video => {
+
+    const card = document.createElement("div");
+    card.className = "video-card";
+
+    card.innerHTML = `
+
+      <div class="thumbnail">
+        <img src="${video.thumb}" alt="${video.title}">
+        <div class="duration">${video.duration}</div>
+      </div>
+
+      <div class="video-info">
+
+        <div class="avatar">
+          ${video.channel[0]}
+        </div>
+
+        <div>
+          <div class="video-title">${video.title}</div>
+          <div class="video-channel">${video.channel}</div>
+          <div class="video-stats">${video.views} • ${video.time}</div>
+        </div>
+
+      </div>
+
+    `;
+
+    card.addEventListener("click",()=>{
+      openVideo(video);
+    });
+
+    grid.appendChild(card);
+
+  });
+
+}
+
+function openVideo(video){
+
+  const player = document.getElementById("videoPlayer");
+
+  player.src = video.video;
+
+  document.getElementById("modalTitle").textContent = video.title;
+
+  document.getElementById("modalMeta").textContent = `${video.channel} • ${video.views}`;
+
+  document.getElementById("modal").classList.add("active");
+
+  document.body.style.overflow = "hidden";
+
+}
+
+function closeVideo(){
+
+  const player = document.getElementById("videoPlayer");
+
+  player.pause();
+
+  player.src = "";
+
+  document.getElementById("modal").classList.remove("active");
+
+  document.body.style.overflow = "auto";
+
+}
+
+function searchVideos(){
+
+  const value = document
+    .getElementById("searchInput")
+    .value
+    .toLowerCase();
+
+  const filtered = videos.filter(video =>
+    video.title.toLowerCase().includes(value) ||
+    video.channel.toLowerCase().includes(value)
+  );
+
+  renderVideos(filtered);
+
+}
+
+document
+.getElementById("searchInput")
+.addEventListener("keyup",e=>{
+
+  if(e.key === "Enter"){
+    searchVideos();
+  }
+
+});
+
+window.addEventListener("click",e=>{
+
+  if(e.target.id === "modal"){
+    closeVideo();
+  }
+
+});
+
+renderVideos(videos);
+
+</script>
+
+</body>
+</html>
