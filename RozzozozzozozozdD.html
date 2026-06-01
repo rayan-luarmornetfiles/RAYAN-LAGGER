@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MonCoin</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f5f5f5;
+}
+
+header{
+    background:#ff6e14;
+    color:white;
+    padding:20px;
+    text-align:center;
+}
+
+.container{
+    width:90%;
+    max-width:1200px;
+    margin:20px auto;
+}
+
+.form-box{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    margin-bottom:30px;
+}
+
+input,textarea{
+    width:100%;
+    padding:10px;
+    margin:8px 0;
+    border:1px solid #ccc;
+    border-radius:5px;
+}
+
+button{
+    background:#ff6e14;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.ads{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:white;
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 2px 5px rgba(0,0,0,.1);
+}
+
+.card img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+}
+
+.card-content{
+    padding:15px;
+}
+
+.chatModal{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,.5);
+    display:none;
+    justify-content:center;
+    align-items:center;
+}
+
+.chatBox{
+    width:400px;
+    background:white;
+    border-radius:10px;
+    padding:15px;
+}
+
+.messages{
+    height:250px;
+    overflow-y:auto;
+    border:1px solid #ddd;
+    padding:10px;
+    margin-bottom:10px;
+}
+
+.message{
+    background:#eee;
+    padding:8px;
+    border-radius:5px;
+    margin-bottom:5px;
+}
+</style>
+</head>
+<body>
+
+<header>
+<h1>MonCoin</h1>
+<p>Achetez et vendez facilement</p>
+</header>
+
+<div class="container">
+
+<div class="form-box">
+<h2>Déposer une annonce</h2>
+
+<input type="text" id="title" placeholder="Titre">
+<input type="number" id="price" placeholder="Prix €">
+<textarea id="description" placeholder="Description"></textarea>
+<input type="file" id="photos" multiple accept="image/*">
+
+<button onclick="publishAd()">Publier</button>
+</div>
+
+<div class="ads" id="ads"></div>
+
+</div>
+
+<div class="chatModal" id="chatModal">
+<div class="chatBox">
+<h3>Discussion</h3>
+
+<div class="messages" id="messages"></div>
+
+<input type="text" id="messageInput" placeholder="Votre message">
+
+<button onclick="sendMessage()">Envoyer</button>
+<button onclick="closeChat()">Fermer</button>
+
+</div>
+</div>
+
+<script>
+
+let currentChat = null;
+
+function publishAd(){
+
+    const title = document.getElementById("title").value;
+    const price = document.getElementById("price").value;
+    const description = document.getElementById("description").value;
+    const files = document.getElementById("photos").files;
+
+    if(!title || !price){
+        alert("Complétez les champs");
+        return;
+    }
+
+    let imageSrc = "https://via.placeholder.com/400x250";
+
+    if(files.length > 0){
+
+        const reader = new FileReader();
+
+        reader.onload = function(e){
+
+            createCard(
+                title,
+                price,
+                description,
+                e.target.result
+            );
+
+        }
+
+        reader.readAsDataURL(files[0]);
+
+    }else{
+
+        createCard(
+            title,
+            price,
+            description,
+            imageSrc
+        );
+
+    }
+
+}
+
+function createCard(title,price,description,image){
+
+    const card = document.createElement("div");
+
+    card.className = "card";
+
+    card.innerHTML = `
+        <img src="${image}">
+        <div class="card-content">
+            <h3>${title}</h3>
+            <h2>${price} €</h2>
+            <p>${description}</p>
+            <br>
+            <button onclick="openChat('${title}')">
+                Contacter
+            </button>
+        </div>
+    `;
+
+    document.getElementById("ads")
+        .prepend(card);
+
+}
+
+function openChat(ad){
+
+    currentChat = ad;
+
+    document.getElementById("chatModal")
+        .style.display = "flex";
+
+}
+
+function closeChat(){
+
+    document.getElementById("chatModal")
+        .style.display = "none";
+
+}
+
+function sendMessage(){
+
+    const input =
+        document.getElementById("messageInput");
+
+    if(input.value.trim() === "") return;
+
+    const div = document.createElement("div");
+
+    div.className = "message";
+
+    div.textContent = input.value;
+
+    document.getElementById("messages")
+        .appendChild(div);
+
+    input.value = "";
+
+}
+
+</script>
+
+</body>
+</html>
