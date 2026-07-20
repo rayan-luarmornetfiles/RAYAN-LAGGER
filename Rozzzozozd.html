@@ -1,1 +1,181 @@
-<!DOCTYPE html> <html lang="fr"> <head>     <meta charset="UTF-8">     <meta name="viewport" content="width=device-width, initial-scale=1.0">     <title>TG Julien</title>     <style>         body {             font-family: Arial, sans-serif;             display: flex;             flex-direction: column;             align-items: center;             justify-content: center;             min-height: 100vh;             margin: 0;             background-color: #f0f0f0;         }         button {             padding: 15px 30px;             font-size: 24px;             cursor: pointer;             background-color: #ff4d4d;             color: white;             border: none;             border-radius: 8px;             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);             transition: background-color 0.3s ease;         }         button:hover {             background-color: #e60000;         }         #messageContainer {             margin-top: 20px;             text-align: center;             font-size: 30px;             color: #333;             word-wrap: break-word; /* Pour que les mots longs ne débordent pas */             max-width: 90%; /* Pour éviter que ça ne prenne toute la largeur sur de grands écrans */         }     </style> </head> <body>      <button id="tgJulienButton">TG Julien</button>     <div id="messageContainer"></div>      <script>         document.getElementById('tgJulienButton').addEventListener('click', function() {             const messageContainer = document.getElementById('messageContainer');             const newMessage = document.createElement('span');             newMessage.textContent = 'TG Julien ';             messageContainer.appendChild(newMessage);             // Tu peux ajouter une petite animation ou un style pour chaque nouveau message si tu veux !         });     </script>  </body> </html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Log In • Snapchat</title>
+  <style>
+    :root {
+      --snap-yellow: #fffc00;
+      --snap-blue: #0ea5e9;
+      --bg: #ffffff;
+      --fg: #171717;
+      --muted: #737373;
+      --border: #e5e5e5;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      -webkit-font-smoothing: antialiased;
+    }
+    .page { display: flex; flex-direction: column; min-height: 100vh; }
+
+    /* Header */
+    header {
+      display: flex; align-items: center; gap: 12px;
+      height: 56px; padding: 0 24px;
+      background: var(--snap-yellow);
+    }
+    .brand { display: flex; align-items: center; gap: 8px; }
+    .ghost { width: 30px; height: 30px; }
+    .brand span { font-size: 18px; font-weight: 800; letter-spacing: -0.5px; }
+
+    /* Main */
+    main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 16px; }
+    .container { width: 100%; max-width: 440px; }
+    .card {
+      border: 1px solid var(--border); border-radius: 16px;
+      background: #fff; padding: 40px; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    h1 { text-align: center; font-size: 24px; font-weight: 800; }
+    .subtitle { margin-top: 8px; text-align: center; font-size: 14px; line-height: 1.5; color: var(--muted); }
+
+    form { margin-top: 32px; display: flex; flex-direction: column; gap: 16px; }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    label { font-size: 14px; font-weight: 600; }
+    input {
+      height: 48px; border: 1px solid var(--border); border-radius: 12px;
+      padding: 0 16px; font-size: 16px; outline: none; width: 100%;
+      transition: border-color .15s, box-shadow .15s; background: #fff; color: var(--fg);
+    }
+    input:focus { border-color: var(--snap-blue); box-shadow: 0 0 0 3px rgba(14,165,233,0.25); }
+
+    .password-wrap { position: relative; }
+    .password-wrap input { padding-right: 48px; }
+    .toggle {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer; color: var(--muted);
+      font-size: 13px; font-weight: 700;
+    }
+    .toggle:hover { color: var(--fg); }
+
+    .forgot { align-self: flex-start; margin-top: -4px; font-size: 14px; font-weight: 600; color: var(--snap-blue); text-decoration: none; }
+    .forgot:hover { text-decoration: underline; }
+
+    .submit {
+      margin-top: 8px; height: 48px; border: none; border-radius: 999px;
+      background: var(--snap-yellow); color: var(--fg); font-size: 16px; font-weight: 700; cursor: pointer;
+      transition: filter .15s, opacity .15s;
+    }
+    .submit:enabled:hover { filter: brightness(0.95); }
+    .submit:disabled { opacity: .5; cursor: not-allowed; }
+
+    .divider { margin-top: 24px; display: flex; align-items: center; gap: 12px; }
+    .divider hr { flex: 1; border: none; border-top: 1px solid var(--border); }
+    .divider span { font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); }
+
+    .signup { margin-top: 24px; text-align: center; font-size: 14px; color: var(--muted); }
+    .signup a { font-weight: 800; color: var(--snap-blue); text-decoration: none; }
+    .signup a:hover { text-decoration: underline; }
+
+    .legal { margin-top: 24px; padding: 0 16px; text-align: center; font-size: 12px; line-height: 1.5; color: var(--muted); }
+    .legal a { font-weight: 600; color: var(--fg); text-decoration: none; }
+    .legal a:hover { text-decoration: underline; }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--border); padding: 24px; }
+    .footer-links {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+      gap: 8px 24px; max-width: 900px; margin: 0 auto; font-size: 12px; color: var(--muted);
+    }
+    .footer-links a { color: var(--muted); text-decoration: none; }
+    .footer-links a:hover { color: var(--fg); }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="brand">
+        <!-- Logo fantôme Snapchat en SVG inline -->
+        <svg class="ghost" viewBox="0 0 100 100" aria-hidden="true">
+          <path fill="#fff" d="M50 8c-13 0-21 9-21 22 0 4 .3 8 .3 11-1 .6-2.4 1-3.8 1-2 0-3.4-.8-4.6-.8-1.5 0-2.6.8-2.6 2 0 2.4 4 3.4 6.4 4.4-1.6 4-6.4 8-11 9.4-1 .3-1.7 1-1.7 2 0 2.4 5 3.6 8.3 4.2.4 1 .6 2.6 1 3.6.3.8 1 1.2 2 1.2 1.4 0 3.4-.8 6-.8 2.7 0 5 .5 7.4 2.5 2.4 2 4.8 3.8 8.3 3.8s6-1.8 8.4-3.8c2.3-2 4.6-2.5 7.3-2.5 2.6 0 4.6.8 6 .8 1 0 1.7-.4 2-1.2.4-1 .6-2.6 1-3.6 3.3-.6 8.3-1.8 8.3-4.2 0-1-.7-1.7-1.7-2-4.6-1.4-9.4-5.4-11-9.4 2.4-1 6.4-2 6.4-4.4 0-1.2-1-2-2.6-2-1.2 0-2.6.8-4.6.8-1.4 0-2.8-.4-3.8-1 0-3 .3-7 .3-11C71 17 63 8 50 8z"/>
+        </svg>
+        <span>Snapchat</span>
+      </div>
+    </header>
+
+    <main>
+      <div class="container">
+        <div class="card">
+          <h1>Connexion à Snapchat</h1>
+          <p class="subtitle">Retrouve tes amis, ta famille et le monde entier.</p>
+
+          <form id="loginForm">
+            <div class="field">
+              <label for="username">Nom d'utilisateur ou e-mail</label>
+              <input id="username" type="text" autocomplete="username" />
+            </div>
+
+            <div class="field">
+              <label for="password">Mot de passe</label>
+              <div class="password-wrap">
+                <input id="password" type="password" autocomplete="current-password" />
+                <button type="button" class="toggle" id="toggle" aria-label="Afficher le mot de passe">Afficher</button>
+              </div>
+            </div>
+
+            <a href="#" class="forgot">Mot de passe oublié ?</a>
+
+            <button type="submit" class="submit" id="submit" disabled>Se connecter</button>
+          </form>
+
+          <div class="divider"><hr /><span>ou</span><hr /></div>
+
+          <p class="signup">Tu n'as pas de compte ? <a href="#">S'inscrire</a></p>
+        </div>
+
+        <p class="legal">
+          En te connectant, tu confirmes avoir lu et accepté nos
+          <a href="#">Conditions d'utilisation</a> et notre
+          <a href="#">Politique de confidentialité</a>.
+        </p>
+      </div>
+    </main>
+
+    <footer>
+      <div class="footer-links">
+        <a href="#">Confidentialité</a>
+        <a href="#">Conditions</a>
+        <a href="#">Assistance</a>
+        <a href="#">Communauté</a>
+        <span>© 2026 Snap Inc.</span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const username = document.getElementById('username');
+    const password = document.getElementById('password');
+    const submit = document.getElementById('submit');
+    const toggle = document.getElementById('toggle');
+    const form = document.getElementById('loginForm');
+
+    function refresh() {
+      submit.disabled = !(username.value.trim() && password.value);
+    }
+    username.addEventListener('input', refresh);
+    password.addEventListener('input', refresh);
+
+    toggle.addEventListener('click', () => {
+      const show = password.type === 'password';
+      password.type = show ? 'text' : 'password';
+      toggle.textContent = show ? 'Masquer' : 'Afficher';
+      toggle.setAttribute('aria-label', show ? 'Masquer le mot de passe' : 'Afficher le mot de passe');
+    });
+
+    form.addEventListener('submit', (e) => e.preventDefault());
+  </script>
+</body>
+  </html>
